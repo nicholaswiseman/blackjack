@@ -166,7 +166,7 @@ def get_wager():
 				print("Can't bet more than you have!")
 	
 		
-if 1:#__name__ == "_main__":
+if __name__== "__main__":
 	#set up the table:
 	#instantiate the player and the dealer and deal to the player
 	player = Player(100)
@@ -174,6 +174,7 @@ if 1:#__name__ == "_main__":
 	play_again = True
 	
 	while play_again == True:
+		#first we shuffle the deck, give the dealer a card, take the players bet, and deal two cards to the player
 		mydeck = get_deck()
 		dealer.draw_card(mydeck)
 		show_table()
@@ -183,13 +184,14 @@ if 1:#__name__ == "_main__":
 		player.draw_card(mydeck)
 		show_table()
 		
-		#if they get less than 21 ask them to hit 
+		#if they get less than 21 ask them to hit or pass
 		if check_hand(player)<21:
 			choice = input("Hit or Pass?")
 			hit = choice.lower() == 'hit'
 		else:
 			hit = False
 		
+		#if they hit, deal them a card and check for bust or 21
 		#keep asking to hit until they pass or bust or get 21
 		while hit == True: 
 			player.draw_card(mydeck)
@@ -199,22 +201,24 @@ if 1:#__name__ == "_main__":
 			choice = input("Hit or Pass? ")
 			hit = choice.lower() == 'hit'
 		
-		#if the player has 21 or busted the hands over
+		#if the player busts the hands over
 		if check_hand(player) == 'BUST':
 			print("YOU BUSTED!")
 			print(f'YOU LOSE {wager} CREDITS!')
 			time.sleep(1)
 			player.credit = player.credit - wager
+		#if the player got blackjack (21 on the first two cards) the hands over
 		elif check_hand(player) == 21 and len(player.hand)==2:
 			print("BLACKJACK!")
 			print(f'YOU GET {wager} CREDITS!')
 			time.sleep(1)
 			player.credit = player.credit + wager
-		else: #if the player doesnt bust or get BJ the dealer will draw next card
-			#dealer.draw_card(mydeck)
+		#if the player doesnt bust or get BJ the dealer will draw second card
+		else: 
 			dealer.draw_card(mydeck)
 			show_table()
 			
+			#dealer will keep drawing cards until the dealer busts, beats the players or matches the player with a sum over 11
 			while 1:
 				if check_hand(dealer)<check_hand(player):
 					dealer.draw_card(mydeck)
@@ -225,6 +229,7 @@ if 1:#__name__ == "_main__":
 				if check_hand(dealer) == 'BUST' or check_hand(dealer)>check_hand(player) or check_hand(dealer)==check_hand(player):
 					break
 			
+			#finally we check the results of the hand
 			if check_hand(dealer) == 'BUST':
 				print("DEALER BUSTS! PLAYER WINS!")
 				print(f'YOU GET {wager} CREDITS!')
@@ -244,7 +249,7 @@ if 1:#__name__ == "_main__":
 				print("PUSH")
 				time.sleep(1)
 
-		#show_table()
+		#clear the hand attributes of the player and dealer
 		player.discard()
 		dealer.discard()
 		if player.credit == 0:
