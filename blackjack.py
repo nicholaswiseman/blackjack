@@ -82,6 +82,12 @@ class Dealer():
             string = string + '| X |  | X |\n'
             string = string + '|/ \|  |/ \|\n'
             string = string + '-----  -----\n'
+        elif len(self.hand) == 1:
+            string = string + '-----  -----\n'
+            string = string + f'|{self.hand[0].value}  |  |\ /|\n'
+            string = string + f'| {self.hand[0].suit[0]} |  | X |\n'
+            string = string + f'|  {self.hand[0].value}|  |/ \|\n'
+            string = string + '-----  -----\n'
         else:
             for card in self.hand:
                 string=string+'-----  '
@@ -169,6 +175,7 @@ if 1:#__name__ == "_main__":
 	
 	while play_again == True:
 		mydeck = get_deck()
+		dealer.draw_card(mydeck)
 		show_table()
 		wager = get_wager()
 		player.draw_card(mydeck)
@@ -203,8 +210,8 @@ if 1:#__name__ == "_main__":
 			print(f'YOU GET {wager} CREDITS!')
 			time.sleep(1)
 			player.credit = player.credit + wager
-		else: #if the player doesnt bust or get BJ the dealer will draw two cards
-			dealer.draw_card(mydeck)
+		else: #if the player doesnt bust or get BJ the dealer will draw next card
+			#dealer.draw_card(mydeck)
 			dealer.draw_card(mydeck)
 			show_table()
 			
